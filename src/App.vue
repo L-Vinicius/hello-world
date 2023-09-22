@@ -1,34 +1,137 @@
 <template>
   <div> 
-      <!-- utilizando o v-show para controlar quando o Header será mostrado -->
-      <MyHeader
-        v-show="showHeader"
-      />
-      <!-- ---------------------------------------------------------------- -->
-      
-      <!-- Separa por nivel de acesso no sistema utilizando o (v-if, v-else-if e v-else) -->
-      <div v-if="acessLevel === 'admin'"> Admin </div>
-      <div v-else-if="acessLevel === 'marketing'"> Marketing </div>
-      <div v-else> User </div>
+    <h1 :class= "{'title':true, 'title-home':isHome}">
+      CURSO 3D
+    </h1>
+    <p :class="['text','title']">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum fuga modi provident iusto! Temporibus obcaecati accusamus earum blanditiis reprehenderit quos explicabo quisquam necessitatibus, tempora sequi, fugit, quam possimus praesentium cumque.
+    </p>
 
-      <!-- verifica se a condição ShowName é true ou false -->
-      <div v-show="showName">
-          Nome: {{firstName}} <br>
-          Sobrenome: {{ lastName }} 
-      </div>
-      <!-- ------------------------------------------------ -->
+    <!-- utilizando o v-show para controlar quando o Header será mostrado -->
+    <MyHeader
+      v-show="showHeader"
+    />
+    <!-- ---------------------------------------------------------------- -->
     
-      <div
-        v-for="(obj, index) in todos"
-        :key="obj.id"
-        class="todos-item"
+    <!-- Separa por nivel de acesso no sistema utilizando o (v-if, v-else-if e v-else) -->
+    <div v-if="acessLevel === 'admin'"> Admin </div>
+    <div v-else-if="acessLevel === 'marketing'"> Marketing </div>
+    <div v-else> User </div>
+
+    <!-- verifica se a condição ShowName é true ou false -->
+    <div v-show="showName">
+        Nome: {{firstName}} <br>
+        Sobrenome: {{ lastName }} 
+    </div>
+    <!-- ------------------------------------------------ -->
+
+    <!-- CRIA UMA LISTA DE VALORES ATRAVÉS DO v-for, ONDE OS VALORES SÃO PASSADOS POR MEIO DE UM DICIONARIO DE VALORES E CHAVES -->
+    <!-- <div
+      v-for="(obj, index) in todos"
+      :key="obj.id"
+      class="todos-item"
+    >
+      <img
+        v-if="obj.imgSrc"
+        :src="obj.imgSrc"
       >
-        <img
-          v-if="obj.imgSrc"
-          :src="obj.imgSrc"
-        >
-        {{index }} - {{ obj.title }}
+      {{index }} - {{ obj.title }}
+    </div> -->
+
+    <!-- Caixa de Texto -->
+    <!-- <br><br>
+    <div>
+      <input
+        v-model="name"
+        type="text"
+        
+      >
+      <br>
+    </div>
+    {{ name }} -->
+
+    <!-- Caixa de Seleção de opçoes -->
+    <!-- <div>
+      <br>
+      <label>Sports</label>
+      <br>
+      <select v-model="sports">
+        <option value="">Escolha</option>
+        <option value="futebol">Futebol</option>
+        <option value="skate">Skate</option>
+        <option value="basquete">Basquete</option>
+      </select>
+    </div>
+    {{ sports }} -->
+
+
+    <!-- Caixa de opções booleanas -->
+    <!-- <br><br>
+    <div>
+      <label>fodase</label>
+      <input 
+      v-model="newsletter"
+      type="radio"
+      value="Sim"
+      >Sim
+    
+      <input 
+      v-model="newsletter"
+      type="radio"
+      value="Não">Não
+    </div>
+    {{ newsletter }} -->
+
+
+    <!-- Caixa de Confirmação booleana -->
+    <!-- <br><br>
+    <div>
+      <label>Contrato</label>
+      <input 
+      v-model="contrato"
+      type="checkbox"
+      
+      >termos do sex
+    </div>
+
+    <br><br> -->
+
+    <!-- Array de opções -->
+    <!-- <div>
+      <label>Colors</label>
+      <input
+      v-model="colors"
+      type="checkbox"
+      value="azul"
+      >azul
+      <input
+      v-model="colors"
+      type="checkbox"
+      value="red"
+      >red
+    </div> -->
+    <br><br>
+    <div>
+      <button @click.stop="submit()"> Enviar</button>
+
+      <div 
+        @mouseover.once="onMouseOver()"
+        @mouseout.once="onMouseOut()"
+      >
+        asdsa
       </div>
+
+    </div>
+    
+    <br><br>
+
+    <div>
+      <form action="https://google.com" 
+      @click.prevent="onSubmit()"
+      >
+        <button type="submit">Enviar</button>
+      </form>
+    </div>
 
   </div>
  
@@ -43,8 +146,15 @@ export default {
   components: {
     MyHeader
   },
+  // local para criar variáveis
   data() {
     return {
+      colors:[],
+      contrato:'',
+      newsletter:'',
+      sports:'skate',
+      name:'teste',
+      isHome: false,
       showHeader: true,
       showName: true,
       firstName: 'jon',
@@ -86,11 +196,38 @@ export default {
                 }
               ]  
     }
+  },
+  // local para criar funções
+  methods: {
+    submit(){
+      console.log('submit')
+    },
+    onMouseOver(){
+      console.log('mouse over')
+    },
+    onMouseOut(){
+      console.log('mouse out')
+    },
+    onSubmit(){
+      console.log('submitt')
+    }
   }
 }
 </script>
 
 <style>
+.title{ 
+  font-size: 20px;
+  color:blue;
+}
+.title-home{
+  font-size: 40px;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  color: green;
+}
+.text{
+  color: blueviolet;
+}
 .todos-item{
   background: #000;
   color: #fff;
