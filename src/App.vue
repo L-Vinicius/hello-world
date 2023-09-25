@@ -1,11 +1,13 @@
 <template>
   <div> 
-    <h1 :class= "{'title':true, 'title-home':isHome}">
+
+    <!-- <h1 :class= "{'title':true, 'title-home':isHome}">
       CURSO 3D
-    </h1>
-    <p :class="['text','title']">
+    </h1> -->
+
+    <!-- <p :class="['text','title']">
       Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum fuga modi provident iusto! Temporibus obcaecati accusamus earum blanditiis reprehenderit quos explicabo quisquam necessitatibus, tempora sequi, fugit, quam possimus praesentium cumque.
-    </p>
+    </p> -->
 
     <!-- utilizando o v-show para controlar quando o Header será mostrado -->
     <MyHeader
@@ -19,15 +21,16 @@
     <div v-else> User </div>
 
     <!-- verifica se a condição ShowName é true ou false -->
-    <div v-show="showName">
-        Nome: {{firstName}} <br>
-        Sobrenome: {{ lastName }} 
-    </div>
+    <!-- <div v-show="showName">
+        Nome: {{user.firstName}} <br>
+        Sobrenome: {{ user.lastName }} 
+    </div> -->
     <!-- ------------------------------------------------ -->
 
     <!-- CRIA UMA LISTA DE VALORES ATRAVÉS DO v-for, ONDE OS VALORES SÃO PASSADOS POR MEIO DE UM DICIONARIO DE VALORES E CHAVES -->
-    <!-- <div
-      v-for="(obj, index) in todos"
+    <h2>Todos em aberto</h2>
+    <div
+      v-for="(obj, index) in uncompletedTodos"
       :key="obj.id"
       class="todos-item"
     >
@@ -36,7 +39,32 @@
         :src="obj.imgSrc"
       >
       {{index }} - {{ obj.title }}
-    </div> -->
+    </div>
+
+    <h2>Todos completas</h2>
+    <div
+      v-for="(obj, index) in completedTodos"
+      :key="obj.id"
+      class="todos-item"
+    >
+      {{index }} - {{ obj.title }}
+    </div>
+
+    <br><br>
+    <h2>todos</h2>
+    <div
+    v-for="obj in todos"
+    :key="obj.id"
+    class="todos-items"
+    >
+      <input
+        v-model="obj.completed"
+        type="checkbox"
+      >
+      {{ obj.title }}
+    </div>
+
+
 
     <!-- Caixa de Texto -->
     <!-- <br><br>
@@ -110,32 +138,38 @@
       value="red"
       >red
     </div> -->
-    <br><br>
+    <!-- <br><br>
     <div>
-      <button @click.stop="submit()"> Enviar</button>
-
+      <button @click="onClick"> enviar</button>
+      
       <div 
         @mouseover.once="onMouseOver()"
         @mouseout.once="onMouseOut()"
       >
-        asdsa
+      onclick
       </div>
 
-    </div>
+    </div> -->
     
-    <br><br>
+    <!-- <br><br>
 
     <div>
       <form action="https://google.com" 
       @click.prevent="onSubmit()"
       >
-        <button type="submit">Enviar</button>
+
+      
+      <input
+      type="text"
+      @keypress.space.enter="onKeyPress"
+      >
+      <button type="submit">submit</button>
+      
       </form>
-    </div>
+    </div> -->
+
 
   </div>
- 
-
 </template>
 
 <script>
@@ -146,7 +180,7 @@ export default {
   components: {
     MyHeader
   },
-  // local para criar variáveis
+  // (data): local para criar variáveis
   data() {
     return {
       colors:[],
@@ -157,50 +191,64 @@ export default {
       isHome: false,
       showHeader: true,
       showName: true,
-      firstName: 'jon',
-      lastName: 'snow',
       acessLevel: 'admin',
       todos: [  
-                {
-                  "userId": 1,
-                  "id": 1,
+        {
+          "userId": 1,
+          "id": 1,
                   "title": "delectus aut autem",
                   "completed": false,
-                  "imgSrc":"https://fakeimg.pl/150x150"
 
-                },
-                {
-                  "userId": 1,
-                  "id": 2,
-                  "title": "quis ut nam facilis et officia qui",
-                  "completed": false
-                },
-                {
-                  "userId": 1,
-                  "id": 3,
-                  "title": "fugiat veniam minus",
-                  "completed": false
-                },
-                {
-                  "userId": 1,
-                  "id": 4,
-                  "title": "et porro tempora",
-                  "completed": true
-                },
-                {
-                  "userId": 1,
-                  "id": 5,
-                  "title": "laboriosam mollitia et enim quasi adipisci quia provident illum",
-                  "completed": false,
-                  "imgSrc":"https://fakeimg.pl/150x150"
-                }
-              ]  
+        },
+        {
+          "userId": 1,
+          "id": 2,
+          "title": "quis ut nam facilis et officia qui",
+          "completed": false
+        },
+        {
+          "userId": 1,
+          "id": 3,
+          "title": "fugiat veniam minus",
+          "completed": true
+        },
+        {
+          "userId": 1,
+          "id": 4,
+          "title": "et porro tempora",
+          "completed": true
+        },
+        // {
+        //   "userId": 1,
+        //   "id": 5,
+        //   "title": "laboriosam mollitia et enim quasi adipisci quia provident illum",
+        //   "completed": false,
+        //   "imgSrc":"https://fakeimg.pl/150x150"
+        // }
+              ], 
+      user: {
+        firstName: 'jon',
+        lastName: 'snow',
+      }
     }
   },
-  // local para criar funções
+  // (computed): local para declarar funções que serão tratadas como campo normal, PRECISA UTILIZAR O return na função, depende do valor de outras variáveis
+  computed: {
+    fullName(){
+      return `${this.user.firstName} ${this.user.lastName}`
+    },
+    uncompletedTodos(){
+      return this.todos.filter(todo => !todo.completed)
+    },
+    completedTodos(){
+      return this.todos.filter(todo => todo.completed)
+    },
+  },
+  // (methods) : local para criar funções
   methods: {
-    submit(){
-      console.log('submit')
+    // a primeira variável sempre será a que mostra o evento da função
+    onClick($evt){
+      console.log('click',$evt,this.user)
     },
     onMouseOver(){
       console.log('mouse over')
@@ -210,6 +258,9 @@ export default {
     },
     onSubmit(){
       console.log('submitt')
+    },
+    onKeyPress($evt){
+      console.log($evt)
     }
   }
 }
@@ -233,7 +284,7 @@ export default {
   color: #fff;
   margin: 0 0 5px 0;
   padding: 3px;
-
+  align-items: left;
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
